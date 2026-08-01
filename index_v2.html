@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nikhil Shetty — Data & Business Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05070d;
+    --bg-soft:#0a0e1a;
+    --card:rgba(255,255,255,0.035);
+    --card-border:rgba(255,255,255,0.09);
+    --card-hover:rgba(255,255,255,0.06);
+    --text:#e7ebf3;
+    --muted:#8b93a7;
+    --muted-2:#5c6478;
+    --cyan:#22d3ee;
+    --violet:#8b5cf6;
+    --pink:#f472b6;
+    --grad: linear-gradient(120deg, var(--cyan), var(--violet) 55%, var(--pink));
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+    --display: 'Space Grotesk', var(--sans);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.65;
+    overflow-x:hidden;
+    position:relative;
+  }
+  ::selection{background:var(--violet); color:#fff;}
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),var(--violet)); border-radius:10px;}
+
+  /* ambient background */
+  .bg-fx{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .blob{position:absolute; border-radius:50%; filter:blur(90px); opacity:0.35;}
+  .blob1{width:520px; height:520px; background:var(--cyan); top:-160px; left:-120px; animation:float1 22s ease-in-out infinite;}
+  .blob2{width:460px; height:460px; background:var(--violet); top:30%; right:-160px; animation:float2 26s ease-in-out infinite;}
+  .blob3{width:420px; height:420px; background:var(--pink); bottom:-180px; left:20%; animation:float3 30s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0);}50%{transform:translate(60px,80px);}}
+  @keyframes float2{0%,100%{transform:translate(0,0);}50%{transform:translate(-70px,50px);}}
+  @keyframes float3{0%,100%{transform:translate(0,0);}50%{transform:translate(50px,-60px);}}
+  .grid-overlay{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  .wrap{max-width:1040px; margin:0 auto; padding:0 28px; position:relative; z-index:2;}
+
+  /* progress bar */
+  #progress{position:fixed; top:0; left:0; height:3px; background:var(--grad); z-index:100; width:0%; transition:width .1s;}
+
+  /* nav */
+  header.nav{
+    position:fixed; top:3px; left:0; right:0; z-index:90;
+    backdrop-filter:blur(14px) saturate(140%);
+    background:rgba(5,7,13,0.6);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .nav-inner{max-width:1040px; margin:0 auto; padding:16px 28px; display:flex; justify-content:space-between; align-items:center;}
+  .logo{font-family:var(--display); font-weight:700; font-size:16px; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;}
+  .logo .dot{width:8px; height:8px; border-radius:50%; background:var(--grad); box-shadow:0 0 12px var(--cyan);}
+  .nav-links{display:flex; gap:28px; font-size:13.5px; font-weight:500;}
+  .nav-links a{color:var(--muted); text-decoration:none; position:relative; padding:4px 0; transition:color .2s;}
+  .nav-links a::after{content:''; position:absolute; left:0; bottom:0; width:0; height:1.5px; background:var(--grad); transition:width .25s;}
+  .nav-links a:hover, .nav-links a.active{color:var(--text);}
+  .nav-links a.active::after, .nav-links a:hover::after{width:100%;}
+
+  /* hero */
+  .hero{min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:120px 0 60px; position:relative;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12.5px;
+    color:var(--cyan); background:rgba(34,211,238,0.08); border:1px solid rgba(34,211,238,0.25);
+    padding:6px 14px; border-radius:20px; margin-bottom:26px; width:fit-content;
+  }
+  .eyebrow .ping{width:7px; height:7px; border-radius:50%; background:#4ade80; box-shadow:0 0 8px #4ade80; animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+  .hero h1{
+    font-family:var(--display); font-weight:700; font-size:clamp(40px,7vw,72px); line-height:1.04; letter-spacing:-1.5px;
+    margin-bottom:18px;
+  }
+  .hero h1 .grad{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .hero .role{font-family:var(--mono); font-size:clamp(15px,2vw,19px); color:var(--muted); margin-bottom:22px;}
+  .hero .role .cursor{display:inline-block; width:2px; height:1em; background:var(--cyan); margin-left:2px; vertical-align:middle; animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .hero .desc{max-width:600px; color:var(--muted); font-size:15.5px; margin-bottom:36px;}
+  .btn-row{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:56px;}
+  .btn{
+    padding:13px 26px; border-radius:10px; font-size:14px; font-weight:600; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px; transition:all .25s; font-family:var(--sans);
+  }
+  .btn-grad{background:var(--grad); color:#04060b; box-shadow:0 8px 30px -8px rgba(139,92,246,0.6);}
+  .btn-grad:hover{transform:translateY(-3px); box-shadow:0 14px 34px -8px rgba(139,92,246,0.8);}
+  .btn-ghost{border:1px solid var(--card-border); color:var(--text); background:var(--card);}
+  .btn-ghost:hover{background:var(--card-hover); transform:translateY(-3px); border-color:rgba(255,255,255,0.2);}
+
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:640px;}
+  .stat{border-left:2px solid; border-image:var(--grad) 1; padding-left:14px;}
+  .stat b{display:block; font-family:var(--display); font-size:26px; font-weight:700;}
+  .stat span{font-size:12px; color:var(--muted-2); text-transform:uppercase; letter-spacing:0.4px;}
+
+  /* sections */
+  section{padding:100px 0; position:relative;}
+  .tag{
+    font-family:var(--mono); font-size:12px; color:var(--violet); text-transform:uppercase;
+    letter-spacing:2px; margin-bottom:10px; display:block;
+  }
+  h2.h{font-family:var(--display); font-size:clamp(26px,4vw,36px); font-weight:700; margin-bottom:44px; letter-spacing:-0.5px;}
+
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* about + terminal */
+  .about-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:center;}
+  .about-text p{color:var(--muted); font-size:15.5px; margin-bottom:16px;}
+  .about-text strong{color:var(--text);}
+  .chips{display:flex; flex-wrap:wrap; gap:9px; margin-top:22px;}
+  .chip{
+    font-family:var(--mono); font-size:12px; padding:7px 13px; border-radius:8px;
+    background:var(--card); border:1px solid var(--card-border); color:var(--muted);
+  }
+
+  .terminal{
+    background:#0a0e18; border:1px solid var(--card-border); border-radius:14px; overflow:hidden;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.7); font-family:var(--mono); font-size:12.8px;
+  }
+  .term-bar{display:flex; align-items:center; gap:7px; padding:12px 16px; background:rgba(255,255,255,0.03); border-bottom:1px solid var(--card-border);}
+  .term-bar span{width:11px; height:11px; border-radius:50%;}
+  .term-bar .r{background:#ff5f56;} .term-bar .y{background:#ffbd2e;} .term-bar .g{background:#27c93f;}
+  .term-title{margin-left:8px; color:var(--muted-2); font-size:11.5px;}
+  .term-body{padding:20px 18px; color:#c9d2e3;}
+  .term-body .l{margin-bottom:9px; white-space:pre-wrap;}
+  .term-prompt{color:var(--cyan);}
+  .term-key{color:var(--violet);}
+  .term-str{color:#ffd479;}
+  .term-comment{color:var(--muted-2);}
+
+  /* timeline */
+  .timeline{position:relative; padding-left:32px;}
+  .timeline::before{content:''; position:absolute; left:6px; top:6px; bottom:6px; width:1.5px; background:linear-gradient(var(--cyan),var(--violet),transparent);}
+  .t-item{position:relative; margin-bottom:38px;}
+  .t-item:last-child{margin-bottom:0;}
+  .t-dot{position:absolute; left:-32px; top:5px; width:12px; height:12px; border-radius:50%; background:var(--bg); border:2px solid var(--cyan); box-shadow:0 0 12px rgba(34,211,238,0.5);}
+  .t-card{background:var(--card); border:1px solid var(--card-border); border-radius:12px; padding:24px 26px; transition:all .3s;}
+  .t-card:hover{background:var(--card-hover); border-color:rgba(255,255,255,0.18); transform:translateX(4px);}
+  .t-head{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;}
+  .t-role{font-family:var(--display); font-weight:600; font-size:17px;}
+  .t-date{font-family:var(--mono); font-size:12px; color:var(--cyan); white-space:nowrap;}
+  .t-org{color:var(--muted); font-size:13.5px; margin-bottom:14px;}
+  .t-card ul{padding-left:18px; color:var(--muted); font-size:14px;}
+  .t-card li{margin-bottom:7px;}
+  .t-card li::marker{color:var(--violet);}
+
+  /* project */
+  .project{
+    background:linear-gradient(160deg, rgba(139,92,246,0.08), rgba(34,211,238,0.04));
+    border:1px solid var(--card-border); border-radius:20px; padding:40px; position:relative; overflow:hidden;
+  }
+  .project::before{
+    content:''; position:absolute; top:-2px; left:-2px; right:-2px; height:3px;
+    background:var(--grad);
+  }
+  .p-head{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; margin-bottom:16px;}
+  .p-title{font-family:var(--display); font-size:24px; font-weight:700;}
+  .p-badge{
+    font-family:var(--mono); font-size:11px; padding:5px 12px; border-radius:20px; letter-spacing:1px;
+    background:rgba(34,211,238,0.12); color:var(--cyan); border:1px solid rgba(34,211,238,0.3);
+  }
+  .p-desc{color:var(--muted); font-size:15px; max-width:680px; margin-bottom:26px;}
+  .p-code{
+    background:#080b13; border:1px solid var(--card-border); border-radius:10px; padding:18px 20px;
+    font-family:var(--mono); font-size:12.5px; overflow-x:auto; margin-bottom:26px;
+  }
+  .p-code .c1{color:var(--violet);} .p-code .c2{color:var(--cyan);} .p-code .c3{color:#ffd479;} .p-code .c4{color:var(--muted-2);}
+  .p-stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:28px;}
+  .p-stat{background:rgba(255,255,255,0.03); border:1px solid var(--card-border); border-radius:12px; padding:16px 18px;}
+  .p-stat .l{font-size:11.5px; color:var(--muted-2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;}
+  .p-stat .v{font-family:var(--display); font-size:19px; font-weight:700; color:var(--text);}
+  .p-stat .s{font-size:12px; color:var(--muted); margin-top:3px;}
+  .tech-row{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:28px;}
+  .tech-chip{font-family:var(--mono); font-size:11.5px; padding:6px 12px; border-radius:7px; background:rgba(139,92,246,0.1); color:#c4b5fd; border:1px solid rgba(139,92,246,0.25);}
+  .p-links{display:flex; gap:14px; flex-wrap:wrap;}
+
+  /* skills */
+  .skills-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px;}
+  .skill-card{background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:24px; transition:all .3s;}
+  .skill-card:hover{transform:translateY(-4px); border-color:rgba(255,255,255,0.2); background:var(--card-hover);}
+  .skill-card h4{font-family:var(--display); font-size:14.5px; margin-bottom:12px; display:flex; align-items:center; gap:9px;}
+  .skill-card h4 .ic{width:8px; height:8px; border-radius:2px; background:var(--grad); transform:rotate(45deg);}
+  .skill-card p{color:var(--muted); font-size:13.5px;}
+
+  /* education */
+  .edu-grid{display:grid; gap:16px;}
+  .edu-card{
+    background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:22px 26px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; transition:all .3s;
+  }
+  .edu-card:hover{background:var(--card-hover); border-color:rgba(255,255,255,0.18);}
+  .edu-title{font-family:var(--display); font-weight:600; font-size:15.5px;}
+  .edu-sub{color:var(--muted); font-size:13px; margin-top:4px; max-width:520px;}
+  .edu-date{font-family:var(--mono); font-size:12px; color:var(--cyan); white-space:nowrap;}
+  .cert-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:24px;}
+  .cert-pill{
+    display:flex; align-items:center; gap:8px; font-size:13px; background:var(--card); border:1px solid var(--card-border);
+    padding:9px 16px; border-radius:24px; color:var(--muted);
+  }
+  .cert-pill .y{font-family:var(--mono); color:var(--muted-2); font-size:11.5px;}
+
+  /* contact */
+  .contact-box{
+    text-align:center; background:radial-gradient(ellipse at center, rgba(139,92,246,0.12), transparent 70%);
+    border:1px solid var(--card-border); border-radius:24px; padding:70px 30px;
+  }
+  .contact-box h2{font-family:var(--display); font-size:clamp(28px,5vw,44px); font-weight:700; margin-bottom:16px; letter-spacing:-1px;}
+  .contact-box p{color:var(--muted); margin-bottom:34px; max-width:480px; margin-left:auto; margin-right:auto;}
+  .contact-row{display:flex; justify-content:center; flex-wrap:wrap; gap:14px;}
+
+  footer{padding:36px 0 50px; text-align:center; color:var(--muted-2); font-size:12.5px; font-family:var(--mono);}
+
+  @media (max-width:780px){
+    .nav-links{display:none;}
+    .about-grid{grid-template-columns:1fr;}
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-fx">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+</div>
+<div class="grid-overlay"></div>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="logo"><span class="dot"></span>Nikhil Shetty</div>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#project">Project</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <span class="eyebrow"><span class="ping"></span>OPEN TO WORK — GERMANY</span>
+    <h1>Nikhil Shetty<br><span class="grad">Data &amp; Business Analyst</span></h1>
+    <div class="role">&gt; Supply Chain · Manufacturing · Procurement Analytics<span class="cursor"></span></div>
+    <p class="desc">Two years of hands-on manufacturing cost and ERP experience at a Fortune 500 interconnect manufacturer, now paired with an MSc in Data Science, AI &amp; Digital Business and a growing SQL toolkit — turning real supply-chain data into decisions.</p>
+    <div class="btn-row">
+      <a class="btn btn-grad" href="https://github.com/Nikhilshetty1999" target="_blank" rel="noopener">View GitHub →</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/nikhil-shetty-027402236/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn-ghost" href="mailto:nikhilshetty873@gmail.com">Email Me</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b data-count="240">0</b><span>BOMs Built</span></div>
+      <div class="stat"><b data-count="2">0</b><span>Years Exp.</span></div>
+      <div class="stat"><b data-count="93">0</b><span>RFQ Quotes Modeled</span></div>
+      <div class="stat"><b data-count="5">0</b><span>SQL Queries</span></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <span class="tag reveal">01 — About</span>
+    <h2 class="h reveal">Bridging real ops data with modern analytics</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a data-oriented professional bridging <strong>two years of hands-on manufacturing cost and ERP experience</strong> with a fresh MSc in Data Science, AI &amp; Digital Business.</p>
+        <p>As a Costing Engineer at a <strong>Fortune 500 interconnect manufacturer</strong>, I independently built 240+ Bills of Materials, managed ERP part and supplier data, and produced Excel-based cost and variance reports for procurement and management stakeholders — direct, provable exposure to the supply chain data most data-science graduates only study in theory.</p>
+        <p>Now combining that domain fluency with developing <strong>SQL, Python, and Power BI</strong> skills to target Data Analyst, Business Analyst, and Supply Chain Analytics roles across Germany.</p>
+        <div class="chips">
+          <span class="chip">manufacturing_data</span>
+          <span class="chip">erp_bom_management</span>
+          <span class="chip">procurement_analytics</span>
+          <span class="chip">rfq_documentation</span>
+          <span class="chip">sql_and_excel</span>
+        </div>
+      </div>
+      <div class="terminal reveal">
+        <div class="term-bar"><span class="r"></span><span class="y"></span><span class="g"></span><span class="term-title">profile.sh</span></div>
+        <div class="term-body">
+          <div class="l"><span class="term-prompt">$</span> whoami</div>
+          <div class="l">nikhil_shetty — <span class="term-str">"Data &amp; Business Analyst"</span></div>
+          <div class="l" style="margin-top:14px;"><span class="term-prompt">$</span> cat experience.json</div>
+          <div class="l">{</div>
+          <div class="l">&nbsp;&nbsp;<span class="term-key">"role"</span>: <span class="term-str">"Costing Engineer"</span>,</div>
+          <div class="l">&nbsp;&nbsp;<span class="term-key">"company"</span>: <span class="term-str">"Amphenol Interconnect"</span>,</div>
+          <div class="l">&nbsp;&nbsp;<span class="term-key">"boms_built"</span>: 240,</div>
+          <div class="l">&nbsp;&nbsp;<span class="term-key">"duration"</span>: <span class="term-str">"2022–2024"</span></div>
+          <div class="l">}</div>
+          <div class="l" style="margin-top:14px;"><span class="term-prompt">$</span> echo $LOCATION</div>
+          <div class="l">Berlin, Germany <span class="term-comment">// §20 AufenthG</span></div>
+          <div class="l" style="margin-top:6px;"><span class="term-prompt">$</span> <span class="cursor" style="animation:blink 1s step-end infinite; display:inline-block; width:8px; height:14px; background:var(--cyan); vertical-align:middle;"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <span class="tag reveal">02 — Experience</span>
+    <h2 class="h reveal">Where I've worked</h2>
+    <div class="timeline">
+      <div class="t-item reveal">
+        <div class="t-dot"></div>
+        <div class="t-card">
+          <div class="t-head"><span class="t-role">Costing Engineer</span><span class="t-date">AUG 2022 — JUL 2024</span></div>
+          <div class="t-org">Amphenol Interconnect India Pvt. Ltd. · Bangalore, India · Fortune 500</div>
+          <ul>
+            <li>Independently prepared 240+ Bills of Materials (~1 every 3 days) using Macola ERP — part numbers, specs, and supplier data across connector, cable, and electronic component lines.</li>
+            <li>Built multi-sheet Excel cost models (VLOOKUP, INDEX-MATCH, Pivot Tables) to consolidate supplier pricing and prepare RFQ documentation.</li>
+            <li>Produced cost breakdown and variance reports for procurement and management stakeholders; flagged data discrepancies for correction.</li>
+            <li>Worked independently within a global Fortune 500 org in a fully English-language environment, coordinating across engineering, procurement, and supplier-facing teams.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="t-item reveal">
+        <div class="t-dot"></div>
+        <div class="t-card">
+          <div class="t-head"><span class="t-role">Operations Associate</span><span class="t-date">JAN 2026 — PRESENT</span></div>
+          <div class="t-org">Picnic GmbH · Berlin, Germany</div>
+          <ul>
+            <li>Full-time role maintaining continuous employment and residence in Berlin while completing the MSc and actively pursuing a transition into data/business analysis roles.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="project">
+    <span class="tag reveal">03 — Featured Project</span>
+    <h2 class="h reveal">BOM Cost &amp; Supplier Analytics</h2>
+    <div class="project reveal">
+      <div class="p-head">
+        <div class="p-title">Real costing logic, rebuilt in SQL</div>
+        <span class="p-badge">SQL · SQLITE</span>
+      </div>
+      <p class="p-desc">Recreates the BOM costing and RFQ analysis I did manually in Excel at Amphenol — consolidating BOMs, comparing supplier quotes against standard cost, and flagging cost/lead-time risk. Synthetic dataset modeled on that real structure: 40 parts, 5 suppliers, 4 product BOMs, 93 RFQ quotes.</p>
+
+      <div class="p-code">
+<div><span class="c4">-- Cost-savings opportunities: latest quote beats standard cost</span></div>
+<div><span class="c1">SELECT</span> p.part_number, p.unit_cost, latest.quoted_unit_cost,</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;p.unit_cost <span class="c2">-</span> latest.quoted_unit_cost <span class="c1">AS</span> <span class="c3">savings_per_unit</span></div>
+<div><span class="c1">FROM</span> parts p</div>
+<div><span class="c1">JOIN</span> (<span class="c1">SELECT ... WHERE</span> quote_date <span class="c2">=</span> <span class="c1">MAX</span>(quote_date)) latest</div>
+<div>&nbsp;&nbsp;<span class="c1">ON</span> latest.part_id <span class="c2">=</span> p.part_id</div>
+<div><span class="c1">WHERE</span> latest.quoted_unit_cost <span class="c2">&lt;</span> p.unit_cost;</div>
+      </div>
+
+      <div class="p-stats">
+        <div class="p-stat"><div class="l">Savings Flagged</div><div class="v">24 / 40 parts</div><div class="s">latest quote beats standard cost</div></div>
+        <div class="p-stat"><div class="l">Highest BOM Cost</div><div class="v">$473.41</div><div class="s">Automotive Wiring Harness Rev C</div></div>
+        <div class="p-stat"><div class="l">Lead-Time Risk</div><div class="v">$279.06</div><div class="s">exposure &gt; 21-day supplier lead time</div></div>
+      </div>
+
+      <div class="tech-row">
+        <span class="tech-chip">JOINs</span>
+        <span class="tech-chip">GROUP BY</span>
+        <span class="tech-chip">Subqueries</span>
+        <span class="tech-chip">Window Functions</span>
+        <span class="tech-chip">Python (data gen)</span>
+      </div>
+
+      <div class="p-links">
+        <a class="btn btn-grad" href="https://github.com/Nikhilshetty1999/bom-cost-analytics-sql" target="_blank" rel="noopener">View Full Repo →</a>
+        <a class="btn btn-ghost" href="https://github.com/Nikhilshetty1999/bom-cost-analytics-sql/blob/main/queries.sql" target="_blank" rel="noopener">All 5 Queries</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <span class="tag reveal">04 — Skills</span>
+    <h2 class="h reveal">What I work with</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal"><h4><span class="ic"></span>Data &amp; Analysis</h4><p>Excel (VLOOKUP, INDEX-MATCH, Pivot Tables), SQL (SELECT, JOINs, GROUP BY, subqueries — developing), Python (basic scripting), ERP (Macola)</p></div>
+      <div class="skill-card reveal"><h4><span class="ic"></span>Supply Chain &amp; Procurement</h4><p>Bill of Materials creation, RFQ documentation, supplier cost analysis, ERP part/spec lookup, cross-functional coordination</p></div>
+      <div class="skill-card reveal"><h4><span class="ic"></span>Reporting &amp; BI</h4><p>Power BI (coursework), Excel dashboards, ad-hoc analysis, data cleaning, KPI reporting</p></div>
+      <div class="skill-card reveal"><h4><span class="ic"></span>Languages</h4><p>English (B2), German (A2 — actively improving), Hindi (Fluent), Kannada (Native)</p></div>
+    </div>
+  </section>
+
+  <section id="education">
+    <span class="tag reveal">05 — Education</span>
+    <h2 class="h reveal">Academic background</h2>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div><div class="edu-title">MSc Data Science, AI &amp; Digital Business</div><div class="edu-sub">GISMA University of Applied Sciences — Berlin · Machine Learning, Business Intelligence, Statistical Analysis, Data Visualisation, Digital Strategy</div></div>
+        <div class="edu-date">OCT 2024 — NOV 2025</div>
+      </div>
+      <div class="edu-card reveal">
+        <div><div class="edu-title">BEng Mechanical Engineering</div><div class="edu-sub">Sahyadri College of Engineering &amp; Management — Mangalore, India</div></div>
+        <div class="edu-date">AUG 2017 — SEP 2021</div>
+      </div>
+    </div>
+    <div class="cert-row reveal">
+      <span class="cert-pill">Intro to Data Analytics with Python — FutureLearn <span class="y">2025</span></span>
+      <span class="cert-pill">Excel Skills to Make an Impression — FutureLearn <span class="y">2025</span></span>
+      <span class="cert-pill">Microsoft Future Ready — Microsoft <span class="y">2025</span></span>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-box reveal">
+      <h2>Let's build something<br>data-driven.</h2>
+      <p>Open to Data Analyst, Business Analyst, and Supply Chain/Procurement Analytics roles across Germany.</p>
+      <div class="contact-row">
+        <a class="btn btn-grad" href="mailto:nikhilshetty873@gmail.com">✉ nikhilshetty873@gmail.com</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/nikhil-shetty-027402236/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn btn-ghost" href="https://github.com/Nikhilshetty1999" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>Berlin, Germany · +49 176 80757460 · Built by Nikhil</footer>
+
+</div>
+
+<script>
+  // scroll progress bar
+  const progress = document.getElementById('progress');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = scrolled + '%';
+  }
+  document.addEventListener('scroll', updateProgress);
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // count-up stats
+  const counters = document.querySelectorAll('[data-count]');
+  const counted = new WeakSet();
+  const cio = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting && !counted.has(e.target)){
+        counted.add(e.target);
+        const target = parseInt(e.target.getAttribute('data-count'),10);
+        let cur = 0;
+        const step = Math.max(1, Math.round(target/40));
+        const t = setInterval(()=>{
+          cur += step;
+          if(cur >= target){ cur = target; clearInterval(t); }
+          e.target.textContent = cur;
+        }, 30);
+      }
+    });
+  }, {threshold:0.5});
+  counters.forEach(el=>cio.observe(el));
+
+  // active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navIo = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      const link = document.querySelector('.nav-links a[href="#' + entry.target.id + '"]');
+      if(!link) return;
+      if(entry.isIntersecting){
+        navLinks.forEach(l=>l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px'});
+  sections.forEach(s=>navIo.observe(s));
+</script>
+
+</body>
+</html>
