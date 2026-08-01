@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nikhil Shetty — Data & Business Analyst</title>
+<style>
+  :root{
+    --navy:#1f3864;
+    --navy-dark:#152848;
+    --navy-light:#2e4f8a;
+    --gold:#c9a24b;
+    --bg:#f7f8fa;
+    --card:#ffffff;
+    --text:#1b1f27;
+    --muted:#5b6470;
+    --border:#e4e7ec;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  a{color:inherit;text-decoration:none;}
+  .container{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,248,250,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:900px;margin:0 auto;padding:14px 24px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .nav-name{font-weight:700;color:var(--navy);letter-spacing:0.3px;}
+  .nav-links{display:flex;gap:22px;font-size:14px;font-weight:500;}
+  .nav-links a{color:var(--muted);transition:color .15s;}
+  .nav-links a:hover{color:var(--navy);}
+
+  .hero{
+    background:linear-gradient(135deg,var(--navy) 0%,var(--navy-dark) 100%);
+    color:#fff;
+    padding:80px 24px 70px;
+  }
+  .hero-inner{max-width:900px;margin:0 auto;}
+  .hero-eyebrow{
+    display:inline-block;font-size:13px;font-weight:600;letter-spacing:1.2px;
+    text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+  }
+  .hero h1{font-size:42px;margin:0 0 10px;font-weight:800;letter-spacing:-0.5px;}
+  .hero .role{font-size:19px;color:#d6dded;margin:0 0 20px;font-weight:500;}
+  .hero .desc{max-width:620px;color:#c3ccdd;font-size:15.5px;margin-bottom:30px;}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:18px;font-size:14px;color:#aebbd4;margin-bottom:30px;}
+  .hero-meta span{display:flex;align-items:center;gap:6px;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:12px;}
+  .btn{
+    padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;
+    display:inline-flex;align-items:center;gap:8px;transition:transform .15s, background .15s;
+  }
+  .btn-primary{background:var(--gold);color:var(--navy-dark);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-outline{border:1px solid rgba(255,255,255,0.35);color:#fff;}
+  .btn-outline:hover{background:rgba(255,255,255,0.08);transform:translateY(-2px);}
+
+  section{padding:56px 0;}
+  section.alt{background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  h2.section-title{
+    font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--gold);margin:0 0 6px;
+  }
+  h3.section-heading{font-size:26px;margin:0 0 28px;font-weight:800;color:var(--navy);}
+
+  .about-text{font-size:16px;color:var(--text);max-width:720px;}
+  .about-text p{margin:0 0 16px;}
+  .strengths{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;}
+  .chip{
+    background:#eef1f7;color:var(--navy);font-size:13px;font-weight:600;
+    padding:7px 14px;border-radius:20px;
+  }
+
+  .exp-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:26px 28px;margin-bottom:18px;
+  }
+  .exp-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
+  .exp-title{font-size:17px;font-weight:700;color:var(--navy);}
+  .exp-sub{font-size:14px;color:var(--muted);margin-bottom:14px;}
+  .exp-date{font-size:13px;color:var(--muted);font-weight:600;white-space:nowrap;}
+  ul.bullets{margin:0;padding-left:20px;color:var(--text);font-size:14.5px;}
+  ul.bullets li{margin-bottom:8px;}
+
+  .project-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:32px;box-shadow:0 1px 3px rgba(16,24,40,0.04);
+  }
+  .project-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:14px;}
+  .project-title{font-size:21px;font-weight:800;color:var(--navy);}
+  .project-tag{
+    font-size:11.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;
+    background:var(--navy);color:#fff;padding:5px 11px;border-radius:6px;
+  }
+  .project-desc{font-size:15px;color:var(--text);margin-bottom:20px;max-width:680px;}
+  .tech-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+  .tech-chip{
+    font-size:12.5px;font-weight:600;color:var(--navy-light);background:#eef1f7;
+    padding:5px 12px;border-radius:6px;border:1px solid #dde3ee;
+  }
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px;}
+  .result-box{
+    background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px 18px;
+  }
+  .result-box .label{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:6px;}
+  .result-box .value{font-size:15px;color:var(--navy);font-weight:700;line-height:1.4;}
+  .result-box .sub{font-size:12.5px;color:var(--muted);margin-top:4px;}
+  .project-links{display:flex;gap:12px;flex-wrap:wrap;}
+  .btn-dark{background:var(--navy);color:#fff;}
+  .btn-dark:hover{background:var(--navy-light);}
+  .btn-ghost{border:1px solid var(--border);color:var(--navy);}
+  .btn-ghost:hover{background:var(--bg);}
+
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;}
+  .skill-group{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 24px;}
+  .skill-group h4{margin:0 0 12px;font-size:14px;color:var(--navy);font-weight:700;}
+  .skill-group p{margin:0;font-size:14px;color:var(--muted);}
+
+  .edu-card{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:18px 0;border-bottom:1px solid var(--border);}
+  .edu-card:last-child{border-bottom:none;}
+  .edu-title{font-weight:700;color:var(--navy);font-size:15.5px;}
+  .edu-sub{font-size:13.5px;color:var(--muted);margin-top:3px;}
+  .edu-date{font-size:13px;color:var(--muted);font-weight:600;white-space:nowrap;}
+
+  .cert-list{display:grid;gap:12px;}
+  .cert-item{
+    display:flex;justify-content:space-between;background:var(--card);
+    border:1px solid var(--border);border-radius:10px;padding:14px 18px;font-size:14px;
+  }
+  .cert-item span.year{color:var(--muted);font-weight:600;}
+
+  footer{
+    background:var(--navy-dark);color:#cdd6e8;padding:48px 24px 32px;text-align:center;
+  }
+  footer h3{color:#fff;font-size:22px;margin:0 0 10px;}
+  footer p{margin:0 0 24px;color:#9fabc4;font-size:14.5px;}
+  .contact-row{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin-bottom:28px;}
+  .foot-note{font-size:12.5px;color:#6d7999;}
+
+  @media (max-width:640px){
+    .hero h1{font-size:32px;}
+    .nav-links{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-name">Nikhil Shetty</div>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">Open to work · Germany</span>
+    <h1>Nikhil Shetty</h1>
+    <p class="role">Data &amp; Business Analyst — Supply Chain, Manufacturing &amp; Procurement Analytics</p>
+    <p class="desc">Two years of hands-on manufacturing cost and ERP experience at a Fortune 500 interconnect manufacturer, now paired with an MSc in Data Science, AI &amp; Digital Business and developing SQL skills — bridging real supply-chain data with modern analytics.</p>
+    <div class="hero-meta">
+      <span>📍 Berlin, Germany</span>
+      <span>🎓 MSc Data Science, AI &amp; Digital Business</span>
+      <span>🛂 §20 AufenthG — eligible to work in Germany</span>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://github.com/Nikhilshetty1999" target="_blank" rel="noopener">View GitHub</a>
+      <a class="btn btn-outline" href="https://www.linkedin.com/in/nikhil-shetty-027402236/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn-outline" href="mailto:nikhilshetty873@gmail.com">Email Me</a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <h2 class="section-title">About</h2>
+    <h3 class="section-heading">Professional Summary</h3>
+    <div class="about-text">
+      <p>Data-oriented professional bridging two years of hands-on manufacturing cost and ERP experience with a fresh MSc in Data Science, AI &amp; Digital Business. As a Costing Engineer at a Fortune 500 interconnect manufacturer, I independently built 240+ Bills of Materials, managed ERP part and supplier data, and produced Excel-based cost and variance reports for procurement and management stakeholders — direct, provable exposure to the supply chain, procurement, and manufacturing data that most data-science graduates only study in theory.</p>
+      <p>I'm now combining that domain fluency with developing SQL, Python, and Power BI skills to target Data Analyst, Business Analyst, Supply Chain Analyst, and Manufacturing/Procurement Analytics roles in Germany.</p>
+    </div>
+    <div class="strengths">
+      <span class="chip">Manufacturing &amp; Supply Chain Data Analysis</span>
+      <span class="chip">ERP &amp; BOM Management (Macola)</span>
+      <span class="chip">Procurement &amp; Cost Analytics</span>
+      <span class="chip">RFQ Documentation</span>
+      <span class="chip">SQL &amp; Excel Reporting</span>
+      <span class="chip">Cross-Functional Stakeholder Communication</span>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="experience">
+  <div class="container">
+    <h2 class="section-title">Experience</h2>
+    <h3 class="section-heading">Professional Experience</h3>
+
+    <div class="exp-card">
+      <div class="exp-head">
+        <div class="exp-title">Costing Engineer</div>
+        <div class="exp-date">Aug 2022 – Jul 2024</div>
+      </div>
+      <div class="exp-sub">Amphenol Interconnect India Pvt. Ltd. — Bangalore, India · Fortune 500 global interconnect manufacturer</div>
+      <ul class="bullets">
+        <li>Independently prepared 240+ Bills of Materials (approx. one every 3 days) using Macola ERP — retrieving part numbers, specifications, and supplier data across connector, cable, and electronic component product lines.</li>
+        <li>Built multi-sheet Excel cost models using VLOOKUP, INDEX-MATCH, and Pivot Tables to consolidate supplier pricing data and prepare RFQ documentation for the procurement team.</li>
+        <li>Produced cost breakdown reports and variance analyses presented to procurement and management stakeholders; identified and flagged data discrepancies for correction.</li>
+        <li>Worked independently within a global Fortune 500 organisation in a fully English-language professional environment, coordinating across engineering, procurement, and supplier-facing teams.</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-head">
+        <div class="exp-title">Operations Associate</div>
+        <div class="exp-date">Jan 2026 – Present</div>
+      </div>
+      <div class="exp-sub">Picnic GmbH — Berlin, Germany</div>
+      <ul class="bullets">
+        <li>Full-time role maintaining continuous employment and residence in Berlin while completing the MSc and actively pursuing a transition into data/business analysis roles aligned with the degree.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <h2 class="section-title">Featured Project</h2>
+    <h3 class="section-heading">Projects</h3>
+
+    <div class="project-card">
+      <div class="project-head">
+        <div class="project-title">BOM Cost &amp; Supplier Analytics</div>
+        <span class="project-tag">SQL</span>
+      </div>
+      <p class="project-desc">Recreates, in SQL, the Bill-of-Materials costing and RFQ analysis I did manually in Excel as a Costing Engineer at Amphenol Interconnect: consolidating BOMs, comparing supplier RFQ quotes against standard cost, and flagging cost/lead-time risk. Dataset is synthetic but modeled directly on that real work structure — 40 parts across 5 categories, 5 suppliers, 4 product BOMs, 93 RFQ quotes.</p>
+      <div class="tech-row">
+        <span class="tech-chip">SQL / SQLite</span>
+        <span class="tech-chip">JOINs</span>
+        <span class="tech-chip">GROUP BY</span>
+        <span class="tech-chip">Subqueries</span>
+        <span class="tech-chip">Window Functions</span>
+        <span class="tech-chip">Python (data generation)</span>
+      </div>
+      <div class="result-grid">
+        <div class="result-box">
+          <div class="label">Cost-savings flagged</div>
+          <div class="value">24 of 40 parts</div>
+          <div class="sub">latest RFQ quote beats standard cost</div>
+        </div>
+        <div class="result-box">
+          <div class="label">Highest BOM cost</div>
+          <div class="value">$473.41</div>
+          <div class="sub">Automotive Wiring Harness Rev C</div>
+        </div>
+        <div class="result-box">
+          <div class="label">Top lead-time risk exposure</div>
+          <div class="value">$279.06</div>
+          <div class="sub">supplier lead time &gt; 21 days</div>
+        </div>
+      </div>
+      <div class="project-links">
+        <a class="btn btn-dark" href="https://github.com/Nikhilshetty1999/bom-cost-analytics-sql" target="_blank" rel="noopener">View on GitHub</a>
+        <a class="btn btn-ghost" href="https://github.com/Nikhilshetty1999/bom-cost-analytics-sql/blob/main/queries.sql" target="_blank" rel="noopener">See the SQL queries</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="skills">
+  <div class="container">
+    <h2 class="section-title">Skills</h2>
+    <h3 class="section-heading">What I Work With</h3>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h4>Data &amp; Analysis</h4>
+        <p>Excel (VLOOKUP, INDEX-MATCH, Pivot Tables, multi-sheet models), SQL (SELECT, JOINs, GROUP BY, subqueries — developing), Python (basic scripting), ERP (Macola)</p>
+      </div>
+      <div class="skill-group">
+        <h4>Supply Chain &amp; Procurement</h4>
+        <p>Bill of Materials (BOM) creation, RFQ documentation, supplier cost analysis, ERP part/spec lookup, cross-functional coordination with procurement teams</p>
+      </div>
+      <div class="skill-group">
+        <h4>Reporting &amp; BI</h4>
+        <p>Power BI (coursework), Excel dashboards, ad-hoc analysis, data cleaning, KPI reporting</p>
+      </div>
+      <div class="skill-group">
+        <h4>Languages</h4>
+        <p>English (B2), German (A2 — actively improving), Hindi (Fluent), Kannada (Native)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="container">
+    <h2 class="section-title">Education</h2>
+    <h3 class="section-heading">Academic Background</h3>
+
+    <div class="edu-card">
+      <div>
+        <div class="edu-title">MSc Data Science, AI &amp; Digital Business</div>
+        <div class="edu-sub">GISMA University of Applied Sciences — Berlin · Machine Learning, Business Intelligence, Statistical Analysis, Data Visualisation, Digital Strategy &amp; Innovation</div>
+      </div>
+      <div class="edu-date">Oct 2024 – Nov 2025</div>
+    </div>
+
+    <div class="edu-card">
+      <div>
+        <div class="edu-title">BEng Mechanical Engineering</div>
+        <div class="edu-sub">Sahyadri College of Engineering &amp; Management — Mangalore, India</div>
+      </div>
+      <div class="edu-date">Aug 2017 – Sep 2021</div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <h4 style="font-size:14px;color:var(--navy);margin-bottom:14px;">Certifications</h4>
+      <div class="cert-list">
+        <div class="cert-item"><span>Intro to Data Analytics with Python — FutureLearn</span><span class="year">2025</span></div>
+        <div class="cert-item"><span>Excel Skills to Make an Impression — FutureLearn</span><span class="year">2025</span></div>
+        <div class="cert-item"><span>Microsoft Future Ready — Microsoft</span><span class="year">2025</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <h3>Let's talk</h3>
+  <p>Open to Data Analyst, Business Analyst, and Supply Chain/Procurement Analytics roles across Germany.</p>
+  <div class="contact-row">
+    <a class="btn btn-outline" href="mailto:nikhilshetty873@gmail.com">✉️ nikhilshetty873@gmail.com</a>
+    <a class="btn btn-outline" href="https://www.linkedin.com/in/nikhil-shetty-027402236/" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="btn btn-outline" href="https://github.com/Nikhilshetty1999" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <div class="foot-note">Berlin, Germany · +49 176 80757460</div>
+</footer>
+
+</body>
+</html>
